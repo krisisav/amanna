@@ -31,7 +31,7 @@ class DbQuoteRepository implements QuoteRepository {
   }
 
   @override
-  Future<List<Quote>> get(String tag) async {
+  Future<List<Quote>> getByTag(String tag) async {
     final database = await db.database;
 
     final quotesList = await database.rawQuery(
@@ -43,6 +43,20 @@ class DbQuoteRepository implements QuoteRepository {
       ['%$tag%']
     );
     
+    return quotesList.map((quote) => Quote.fromMap(quote)).toList();
+  }
+
+  @override
+  Future<List<Quote>> getAll() async {
+    final database = await db.database;
+
+    final quotesList = await database.rawQuery(
+      '''
+        SELECT * FROM ${DatabaseProvider.quotesTableName}
+        ORDER BY id DESC
+      '''
+    );
+
     return quotesList.map((quote) => Quote.fromMap(quote)).toList();
   }
 
