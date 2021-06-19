@@ -5,4 +5,5 @@ abstract class QuoteRepository {
   Future<List<Quote>> getByTag(String tag);
   Future<List<Quote>> getAll();
   Future<void> delete(Quote quote);
+  Future<bool> contains(Quote quote);
 }

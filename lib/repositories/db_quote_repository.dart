@@ -1,9 +1,10 @@
 import 'package:amanna/database/database.dart';
+import 'package:amanna/main.dart';
 import 'package:amanna/models/quote.dart';
 import 'package:amanna/repositories/quote_repository.dart';
 
 class DbQuoteRepository implements QuoteRepository {
-  final db = DatabaseProvider.db;
+  final db = getIt.get<DatabaseProvider>();
 
   @override
   Future<void> save(Quote quote) async {
@@ -64,9 +65,21 @@ class DbQuoteRepository implements QuoteRepository {
   Future<void> delete(Quote quote) async {
     final database = await db.database;
 
-    await database.rawDelete(
+    final int id = await database.rawDelete(
       'DELETE FROM ${DatabaseProvider.quotesTableName} WHERE quote_id = ?',
       [quote.id]
     );
+    print('Successfully deleted quote with id = $id');
+  }
+
+  @override
+  Future<bool> contains(Quote quote) async {
+    final database = await db.database;
+    final queryId = await database.rawQuery(
+      'SELECT query_id FROM ${DatabaseProvider.quotesTableName} WHERE quote_id = ?',
+      [quote.id]
+    );
+
+    return queryId.isNotEmpty;
   }
 }
