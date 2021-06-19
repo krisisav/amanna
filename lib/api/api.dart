@@ -25,16 +25,27 @@ class API {
     }
   }
 
-  Future getTags() async {
+  Future<List<Tag>> getTags() async {
     final url = '$baseUrl/tags';
+    final List<Tag> tags = [];
 
     try {
-      final Response response = await _dio.get(url);
+      final Response response = await dio.get(url);
       print('Successfully loaded tags!');
 
-      return response.data!;
+      final results = response.data.cast<Map<String, dynamic>>();
+      results.forEach((e) {
+        if(e['quoteCount'] > 0) {
+          tags.add(Tag(
+            name: e['name'],
+            quoteCount: e['quoteCount'],
+          ));
+        }
+      });
     } on DioError catch (error) {
       print('${error.message} : ${error.response}');
     }
+
+    return tags;
   }
 }
