@@ -7,8 +7,8 @@ class QuoteSynchronizer {
   final _api = getIt.get<API>();
   final _quoteRepository = getIt.get<QuoteRepository>();
 
-  Future<void> saveQuotesToDatabase(int page) async {
-    final quotesList = await _api.loadPageOfQuotes(page);
+  Future<void> saveQuotesToDatabase() async {
+    final quotesList = await api.loadPageOfQuotes();
 
     if(quotesList != null && quotesList.isNotEmpty) {
       quotesList.forEach((mappedQuote) async {

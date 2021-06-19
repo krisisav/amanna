@@ -7,6 +7,9 @@ class API {
   Future<List<Map<String, dynamic>>?> loadPageOfQuotes(int page) async {
     assert(page > 0 && page < 95);
 
+  Future<List<Map<String, dynamic>>?> loadPageOfQuotes() async {
+    int page = getRandomPageNumber(1, 94);
+
     final url = '$baseUrl/quotes?page=$page';
 
     try {
