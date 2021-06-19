@@ -1,11 +1,14 @@
+import 'package:amanna/models/tag.dart';
+import 'package:amanna/utilities/helpers.dart';
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 
+@singleton
 class API {
-  final _dio = Dio();
   static final baseUrl = 'https://api.quotable.io';
 
-  Future<List<Map<String, dynamic>>?> loadPageOfQuotes(int page) async {
-    assert(page > 0 && page < 95);
+  @lazySingleton
+  Dio get dio => Dio();
 
   Future<List<Map<String, dynamic>>?> loadPageOfQuotes() async {
     int page = getRandomPageNumber(1, 94);
@@ -13,7 +16,7 @@ class API {
     final url = '$baseUrl/quotes?page=$page';
 
     try {
-      final Response response = await _dio.get(url);
+      final Response response = await dio.get(url);
       print('Successfully loaded quotes from page $page!');
 
       return response.data['results']!;

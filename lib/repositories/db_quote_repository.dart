@@ -1,10 +1,14 @@
 import 'package:amanna/database/database.dart';
-import 'package:amanna/main.dart';
 import 'package:amanna/models/quote.dart';
 import 'package:amanna/repositories/quote_repository.dart';
+import 'package:injectable/injectable.dart';
 
+@Named('sqlite')
+@Singleton(as: QuoteRepository)
 class DbQuoteRepository implements QuoteRepository {
-  final db = getIt.get<DatabaseProvider>();
+  final DatabaseProvider db;
+
+  const DbQuoteRepository(this.db);
 
   @override
   Future<void> save(Quote quote) async {

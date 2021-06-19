@@ -1,8 +1,11 @@
 import 'dart:io';
+import 'package:amanna/services/get_it_setup.dart';
+import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
+@singleton
 class DatabaseProvider {
   static final String _databaseName = 'amanna.db';
   static final int _databaseVersion = 1;
