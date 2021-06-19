@@ -1,22 +1,13 @@
-import 'package:amanna/api/api.dart';
-import 'package:amanna/database/database.dart';
-import 'package:amanna/models/tags.dart';
-import 'package:amanna/repositories/db_quote_repository.dart';
-import 'package:amanna/repositories/quote_repository.dart';
+import 'package:amanna/models/tag.dart';
+import 'package:amanna/services/get_it_setup.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
-final getIt = GetIt.instance;
-
-void setupGetIt() {
-  getIt.registerSingleton<API>(API());
-  getIt.registerSingleton<DatabaseProvider>(DatabaseProvider());
-  getIt.registerSingleton<QuoteRepository>(DbQuoteRepository());
-  getIt.registerSingletonAsync<List<Tag>>(() async => Tags().tags);
-}
+import 'api/api.dart';
 
 void main() {
-  setupGetIt();
+  WidgetsFlutterBinding.ensureInitialized();
+
+  configureDependencies();
   runApp(MyApp());
 }
 
@@ -29,7 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       home: FutureBuilder<List<Tag>>(
-        future: getIt.getAsync<List<Tag>>(),
+        future: getIt.get<API>().getTags(),
         builder: (context, snapshot) {
           if(snapshot.connectionState != ConnectionState.done) {
             return Center(
