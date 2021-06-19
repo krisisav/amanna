@@ -4,8 +4,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseProvider {
-  DatabaseProvider._();
-  static final DatabaseProvider db = DatabaseProvider._();
   static final String _databaseName = 'amanna.db';
   static final int _databaseVersion = 1;
   static final String quotesTableName = 'quotes';
