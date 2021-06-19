@@ -13,7 +13,7 @@ class Quote {
 
   factory Quote.fromMap(Map<String, dynamic> map) {
     return Quote(
-      id: map['id'],
+      id: map['_id'],
       content: map['content'],
       author: map['author'],
       tags: map['tags'].cast<String>().toList(),
