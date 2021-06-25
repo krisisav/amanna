@@ -8,7 +8,7 @@ class QuoteSynchronizer {
   final API api;
   final QuoteRepository quoteRepository;
 
-  const QuoteSynchronizer(this.api, @Named('sqlite') this.quoteRepository);
+  const QuoteSynchronizer(this.api, @Named('quote') this.quoteRepository);
 
   Future<void> saveQuotesToDatabase() async {
     final quotesList = await api.loadPageOfQuotes();

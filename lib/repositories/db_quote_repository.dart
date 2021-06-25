@@ -3,7 +3,7 @@ import 'package:amanna/models/quote.dart';
 import 'package:amanna/repositories/quote_repository.dart';
 import 'package:injectable/injectable.dart';
 
-@Named('sqlite')
+@Named('quote')
 @Singleton(as: QuoteRepository)
 class DbQuoteRepository implements QuoteRepository {
   final DatabaseProvider db;
