@@ -1,3 +1,4 @@
+import 'package:amanna/api/tag_response.dart';
 import 'package:amanna/models/quote.dart';
 import 'package:amanna/models/tag.dart';
 import 'package:amanna/utilities/helpers.dart';
@@ -39,7 +40,9 @@ class API {
     }
   }
 
+  Future<List<TagResponse>> getTags() async {
     final url = '$baseUrl/tags';
+    final List<TagResponse> tags = [];
 
     try {
       final Response response = await dio.get(url);
@@ -48,6 +51,7 @@ class API {
       final results = response.data.cast<Map<String, dynamic>>();
       results.forEach((e) {
         if(e['quoteCount'] > 5) {
+          tags.add(TagResponse(
             id: e['_id'],
             name: e['name'],
             quoteCount: e['quoteCount'],
