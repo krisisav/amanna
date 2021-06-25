@@ -18,9 +18,23 @@ class QuoteSynchronizer {
         final quote = Quote.fromMap(mappedQuote);
 
         if(await quoteRepository.contains(quote) == false) {
-          await quoteRepository.save(Quote.fromMap(mappedQuote));
+          await quoteRepository.save(quote);
         }
       });
+    }
+  }
+
+  Future<void> saveQuoteToDatabase(String tag) async {
+    final quote = await api.getQuoteByTag(tag);
+
+    if(quote == null) {
+      return;
+    }
+
+    final bool isAlreadySaved = await quoteRepository.contains(quote);
+
+    if(!isAlreadySaved) {
+      await quoteRepository.save(quote);
     }
   }
 }
