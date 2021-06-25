@@ -10,6 +10,7 @@ class DatabaseProvider {
   static final String _databaseName = 'amanna.db';
   static final int _databaseVersion = 1;
   static final String quotesTableName = 'quotes';
+  static final String tagsTableName = 'tags';
   static Database? _database;
 
   Future<Database> get database async {
@@ -28,17 +29,18 @@ class DatabaseProvider {
       path,
       version: _databaseVersion,
       onCreate: (db, version) async {
-        await _createTable(db, _databaseVersion);
+        await _createTableQuotes(db, _databaseVersion);
+        await _createTableTags(db, _databaseVersion);
       }
     );
   }
 
-  Future<void> _createTable(Database db, int version) async {
+  Future<void> _createTableQuotes(Database db, int version) async {
     await db.execute(
       '''
         CREATE TABLE $quotesTableName (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
-          quote_id TEXT NOT NULL,
+          quote_id TEXT UNIQUE NOT NULL,
           content TEXT NOT NULL,
           author TEXT NOT NULL,
           tags TEXT NOT NULL
@@ -46,5 +48,19 @@ class DatabaseProvider {
       '''
     );
     print('Successfully created table quotes!');
+  }
+
+  Future<void> _createTableTags(Database db, int version) async {
+    await db.execute(
+      '''
+        CREATE TABLE $tagsTableName (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          tag_id TEXT UNIQUE NOT NULL,
+          name TEXT NOT NULL,
+          quote_count INTEGER NOT NULL
+        );
+      '''
+    );
+    print('Successfully created table tags!');
   }
 }
