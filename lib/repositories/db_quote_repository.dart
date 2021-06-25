@@ -17,7 +17,7 @@ class DbQuoteRepository implements QuoteRepository {
     await database.transaction((txn) async {
       final int id = await txn.rawInsert(
         '''
-          INSERT INTO ${DatabaseProvider.quotesTableName}(
+          INSERT OR REPLACE INTO ${DatabaseProvider.quotesTableName}(
             quote_id, 
             content, 
             author, 
