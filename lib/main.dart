@@ -1,4 +1,5 @@
 import 'package:amanna/models/tag.dart';
+import 'package:amanna/screens/home_page.dart';
 import 'package:amanna/services/get_it_setup.dart';
 import 'package:flutter/material.dart';
 
@@ -28,40 +29,8 @@ class MyApp extends StatelessWidget {
             );
           }
 
-          return MyHomePage(snapshot.data!);
+          return HomePage(snapshot.data!);
         }
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  final List<Tag> tags;
-
-  MyHomePage(this.tags);
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('AMANNA'),
-      ),
-      body: ListView.builder(
-        shrinkWrap: true,
-        physics: BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
-        itemCount: widget.tags.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            child: Text(widget.tags[index].name),
-          );
-        },
       ),
     );
   }
