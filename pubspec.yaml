@@ -23,6 +23,8 @@ dependencies:
 
 dev_dependencies:
   injectable_generator: ^1.4.1
+  mockito: ^5.0.10
+  sqflite_common_ffi: ^2.0.0+1
   build_runner: ^2.0.4
   flutter_test:
     sdk: flutter

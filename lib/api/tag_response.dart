@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class TagResponse {
   final String id;
   final String name;

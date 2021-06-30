@@ -16,23 +16,29 @@ class TagSynchronizer {
     final tagsFromDatabase = await tagRepository.getAll();
     final tagsList = await api.getTags();
 
+    if(tagsList.isEmpty) {
+      return;
+    }
+
+    addOrUpdate(tagsList, tagsFromDatabase);
+
+    tagsFromDatabase.forEach((tag) async {
+      await tagRepository.save(tag);
+    });
+  }
+
+  void addOrUpdate(List<TagResponse> tagsList, List<Tag> tagsFromDatabase) {
     for(TagResponse tagResponse in tagsList) {
       Tag? tag = tagsFromDatabase.firstWhereOrNull(
-          (tag) => tag.id == tagResponse.id,
+            (tag) => tag.id == tagResponse.id,
       );
 
       if(tag == null) {
-        tagsFromDatabase.add(Tag(
-          id: tagResponse.id,
-          name: tagResponse.name,
-          quoteCount: tagResponse.quoteCount
-        ));
+        tagsFromDatabase.add(Tag.fromTagResponse(tagResponse));
       } else {
         tag.name = tagResponse.name;
         tag.quoteCount = tagResponse.quoteCount;
       }
     }
-
-    await tagRepository.saveAll(tagsFromDatabase);
   }
 }

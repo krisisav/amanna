@@ -4,6 +4,7 @@ import 'package:amanna/services/get_it_setup.dart';
 import 'package:flutter/material.dart';
 
 import 'api/api.dart';
+import 'api/tag_response.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      home: FutureBuilder<List<Tag>>(
+      home: FutureBuilder<List<TagResponse>>(
         future: getIt.get<API>().getTags(),
         builder: (context, snapshot) {
           if(snapshot.connectionState != ConnectionState.done) {
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
             );
           }
 
-          return HomePage(snapshot.data!);
+          return HomePage(snapshot.data!.map((e) => Tag.fromTagResponse(e)).toList());
         }
       ),
     );

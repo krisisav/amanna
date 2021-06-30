@@ -1,3 +1,4 @@
+import 'package:amanna/api/tag_response.dart';
 import 'package:flutter/material.dart';
 
 class Tag {
@@ -30,6 +31,14 @@ class Tag {
       id: map['tag_id'],
       name: map['name'],
       quoteCount: map['quote_count'],
+    );
+  }
+
+  factory Tag.fromTagResponse(TagResponse tagResponse) {
+    return Tag(
+      id: tagResponse.id,
+      name: tagResponse.name,
+      quoteCount: tagResponse.quoteCount,
     );
   }
 }
