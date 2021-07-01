@@ -5,8 +5,8 @@ import 'package:amanna/sync/tag_synchronizer.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import '../api/tag_response_test.dart';
-import '../models/tag_test.dart';
+import '../_resources/tag_response_test.dart';
+import '../_resources/tag_test.dart';
 import 'tag_synchronizer_test.mocks.dart';
 
 @GenerateMocks([API, TagRepository])
@@ -47,7 +47,6 @@ void main() async {
 
     //act
     await tagSynchronizer.saveTagsToDatabase();
-    tagSynchronizer.addOrUpdate(tagResponse, databaseTags);
     await tagRepository.getAll();
 
     //assert

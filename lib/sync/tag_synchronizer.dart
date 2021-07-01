@@ -20,14 +20,14 @@ class TagSynchronizer {
       return;
     }
 
-    addOrUpdate(tagsList, tagsFromDatabase);
+    _addOrUpdateTagsList(tagsList, tagsFromDatabase);
 
     tagsFromDatabase.forEach((tag) async {
       await tagRepository.save(tag);
     });
   }
 
-  void addOrUpdate(List<TagResponse> tagsList, List<Tag> tagsFromDatabase) {
+  void _addOrUpdateTagsList(List<TagResponse> tagsList, List<Tag> tagsFromDatabase) {
     for(TagResponse tagResponse in tagsList) {
       Tag? tag = tagsFromDatabase.firstWhereOrNull(
             (tag) => tag.id == tagResponse.id,
