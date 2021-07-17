@@ -1,28 +1,31 @@
 import 'package:amanna/models/tag.dart';
+import 'package:amanna/repositories/tag_repository.dart';
 import 'package:amanna/screens/home_page.dart';
 import 'package:amanna/services/get_it_setup.dart';
+import 'package:amanna/sync/tag_synchronizer.dart';
 import 'package:flutter/material.dart';
-
-import 'api/api.dart';
-import 'api/tag_response.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   configureDependencies();
-  runApp(MyApp());
+  getIt.get<TagSynchronizer>().saveTagsToDatabase().then((_) {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Amanna',
       theme: ThemeData(
         primarySwatch: Colors.teal,
+        accentColor: Color(0xFF590959),
       ),
-      home: FutureBuilder<List<TagResponse>>(
-        future: getIt.get<API>().getTags(),
+      home: FutureBuilder<List<Tag>>(
+        future: getIt.get<TagRepository>(instanceName: 'tag').getAll(),
         builder: (context, snapshot) {
           if(snapshot.connectionState != ConnectionState.done) {
             return Center(
@@ -30,7 +33,7 @@ class MyApp extends StatelessWidget {
             );
           }
 
-          return HomePage(snapshot.data!.map((e) => Tag.fromTagResponse(e)).toList());
+          return HomePage(snapshot.data!);
         }
       ),
     );
