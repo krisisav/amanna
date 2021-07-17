@@ -1,4 +1,9 @@
+import 'package:amanna/api/api.dart';
 import 'package:amanna/models/tag.dart';
+import 'package:amanna/services/get_it_setup.dart';
+import 'package:amanna/widgets/home_page/error_dialog.dart';
+import 'package:amanna/widgets/home_page/quote_dialog.dart';
+import 'package:amanna/widgets/home_page/tag_card.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -56,41 +61,22 @@ class _HomePageState extends State<HomePage> {
                         vertical: 2.0,
                         horizontal: 10.0,
                       ),
-                      child: Card(
-                        color: Colors.transparent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            height: 70,
-                            color: Colors.black.withOpacity(0.05),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  color: Color(0xFF590959),
-                                  width: 70,
-                                  height: 70,
-                                  child: Icon(
-                                    widget.tags[index].icon,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                SizedBox(width: 20.0),
-                                Expanded(
-                                  child: Text(
-                                    '# ' + widget.tags[index].name,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontStyle: FontStyle.italic,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      child: GestureDetector(
+                        child: TagCard(widget.tags[index]),
+                        onTap: () async {
+                          final quote = await getIt.get<API>()
+                              .getQuoteByTag(widget.tags[index].name);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext ctx) {
+                              if(quote == null) {
+                                return ErrorDialog();
+                              }
+
+                              return QuoteDialog(quote, widget.tags[index]);
+                            },
+                          );
+                        },
                       ),
                     );
                   },
